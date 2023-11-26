@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,body{
+  color: black;
+  background-color: rgb(241, 246, 241);
+  font-family: Roboto, sans-serif;
+  margin-top:40px;
+}
+h1{
+  color:black;
+  font-size:25px;
+  font-family:Roboto, sans-serif;
+  text-align:center;
+  margin:20px 0;
+}
+.tareas{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  align-items:center;
+}
+.principal{
+  width: 600px;
+  min-height:500px;
+  background-color:#80ef96;
+  padding:25px;
+  margin:10px;
+  justify-content:center;
+  border-radius:26px;
+
+}
