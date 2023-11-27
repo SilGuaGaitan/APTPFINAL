@@ -17,11 +17,12 @@ function Formulario(props) {
             completada : false
         };
         props.onSubmit(tareaNueva);
-        setInput('');
+        e.target.reset();
     };
     return (
         <form className='formulario'
-                onSubmit={manejarEnvio}>
+                onSubmit={manejarEnvio}
+                >
           <input
            className='input'
            type='text'
