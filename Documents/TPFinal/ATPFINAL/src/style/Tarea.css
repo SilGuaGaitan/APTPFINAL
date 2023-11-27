@@ -19,10 +19,16 @@
     align-items: center;
     overflow-wrap: anywhere;
 }
-.icono{
-    width: 25px;
-    height: 25px;
-    margin: 5px;
+.botonb{
+    padding: 10px;
+    font-size: 15px;
+    font-family:Roboto, sans-serif;
+    border: none;
+    border-radius: 8px;
+    cursor:pointer;
+    background-color: rgb(7, 246, 246);
+    color: black;
+    text-transform: capitalize;
 }
 .contenedor.completada{
     background-color: blueviolet;

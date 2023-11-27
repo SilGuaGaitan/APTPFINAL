@@ -1,23 +1,24 @@
 import React, {useState} from "react";
 import '../style/Formulario.css';
-import { v4 as uuidv4 } from 'uuid';
+
 
 function Formulario(props) {
 
     const [input, setInput] = useState('');
-
+    const [proximoID, setProximoID] =useState(0);
     const manejarCambio = e =>{
        setInput(e.target.value);
     };
     const manejarEnvio = e =>{
         e.preventDefault();
         const tareaNueva = {
-            id: uuidv4(),
+            id: proximoID,
             texto : input,
             completada : false
         };
         props.onSubmit(tareaNueva);
         e.target.reset();
+        setProximoID(proximoID +1);
     };
     return (
         <form className='formulario'

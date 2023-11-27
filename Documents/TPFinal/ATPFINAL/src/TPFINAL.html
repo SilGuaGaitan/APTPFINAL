@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Librería REACT -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+
+  <!-- Librería Babel para convertir JSX -->
+  <script src="https://unpkg.com/@babel/standalone@7.23.4/babel.min.js"></script>
+
+  <title>Trabajo Practico Final</title>
+  <style>
+    /* Aca va todo los CSS */
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,body{
+  color: black;
+  background-color: rgb(241, 246, 241);
+  font-family: Roboto, sans-serif;
+  margin-top:40px;
+}
+h1{
+  color:black;
+  font-size:25px;
+  font-family:Roboto, sans-serif;
+  text-align:center;
+  margin:20px 0;
+}
+.tareas{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  align-items:center;
+}
+.principal{
+  width: 600px;
+  min-height:500px;
+  background-color:#80ef96;
+  padding:25px;
+  margin:10px;
+  justify-content:center;
+  border-radius:26px;
+
+}
+.contenedor{
+    width:420px;
+    min-height:65px;
+    background-color: blanchedalmond;
+    margin:5px 0;
+    padding:8px 10px 8px 10px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 7px;
+    border: 1px solid white;
+    cursor:pointer;
+}
+.texto{
+    width: 100%;
+    height:100%;
+    font-size:20px;
+    display:flex;
+    align-items: center;
+    overflow-wrap: anywhere;
+}
+.botonb{
+    padding: 10px;
+    font-size: 15px;
+    font-family:Roboto, sans-serif;
+    border: none;
+    border-radius: 8px;
+    cursor:pointer;
+    background-color: rgb(7, 246, 246);
+    color: black;
+    text-transform: capitalize;
+}
+.contenedor.completada{
+    background-color: blueviolet;
+    text-decoration: line-through;
+    
+}
+.contenedor-listas{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+.formulario{
+    display:flex;
+    flex-wrap:wrap;
+    align-items: center;
+    justify-content: center;
+
+}
+.input{
+    width: 420px;
+    font-size: 18px;
+    background-color: white;
+    padding: 14px 32px 14px 16px;
+    border-radius: 4px 0 0 4px;
+    border: 2px solid greenyellow;
+    outline: none;
+
+}
+.boton{
+    padding: 16px;
+    font-size: 15px;
+    font-family:Roboto, sans-serif;
+    border: none;
+    border-radius: 0 4px 0 4px;
+    cursor:pointer;
+    background-color: rgb(7, 246, 246);
+    color: black;
+    text-transform: capitalize;
+}
+</style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="env,react">
+    const { useState } = React;
+
+function App() {
+    return (
+    <div className= 'tareas'>
+      
+      <div className='principal'>
+         <h1>Tareas a Realizar:</h1>
+          <ListadeTareas />
+
+      </div>
+      
+    </div>
+   );
+  }
+function Tarea ({id, texto, completada, completarTarea, eliminarTarea}) {
+    return (
+    <>
+        <div className={completada ? 'contenedor completada' : 'contenedor'}>
+            <div className= 'texto' onClick={()=> completarTarea(id)} >
+                {texto}
+            </div>
+           
+        </div> 
+        <button className='botonb'  onClick={()=> {if(completada){eliminarTarea(id)}}} >Borrar</button>
+    </>
+    );
+  }
+function ListadeTareas (){
+
+  const [tareas, setTareas] = useState([]);
+  const  agregarTarea= tarea =>{
+    if (tarea.texto.trim()){
+     tarea.texto= tarea.texto.trim();
+     const tareasActualizadas= [...tareas, tarea];
+     setTareas(tareasActualizadas);
+    }} ;
+  const eliminarTarea= id =>{
+  const tareasActualizadas= tareas.filter((tarea) => tarea.id !== id);
+  setTareas(tareasActualizadas);
+  }; 
+  const completarTarea= id=>{
+  const tareasActualizadas= tareas.map((tarea) =>{
+     if(tarea.id === id){
+         tarea.completada = !tarea.completada;
+     }
+     return tarea;
+     });
+     setTareas(tareasActualizadas);
+  };
+
+  return (
+     <>
+        <Formulario onSubmit = {agregarTarea} />
+        <div className = 'contenedor-listas'>
+         
+         {tareas.map((tarea) =>
+             <Tarea
+                 key={ tarea.id}
+                 id = { tarea.id}
+                 texto = { tarea.texto} 
+                 completada = { tarea.completada }
+                 completarTarea ={ completarTarea }
+                 eliminarTarea = { eliminarTarea }
+             />
+             )
+         }       
+        </div>
+     </>
+   );
+  }
+function Formulario(props) {
+
+  const [input, setInput] = useState('');
+  const [proximoID, setProximoID] =useState(0);
+  const manejarCambio = e =>{
+     setInput(e.target.value);
+  };
+  const manejarEnvio = e =>{
+    e.preventDefault();
+    const tareaNueva = {
+        id: proximoID,
+        texto : input,
+        completada : false
+    };
+    props.onSubmit(tareaNueva);
+    e.target.reset();
+    setProximoID(proximoID +1);
+  };
+  return (
+    <form className='formulario'
+            onSubmit={manejarEnvio}
+            >
+      <input
+       className='input'
+       type='text'
+       placeholder='Ingrese una tarea'
+       name='texto'
+       onChange = {manejarCambio}
+      />
+      <button className='boton'>Agregar Tarea</button>
+    </form>
+  );
+}
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+
+</html>
